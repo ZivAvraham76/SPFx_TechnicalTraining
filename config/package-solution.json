@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "roni-technical-training-client-side-solution",
+    "id": "2a4999a2-a0fd-450e-802a-c169a3dba863",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "roni-technical-training description"
+      },
+      "longDescription": {
+        "default": "roni-technical-training description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "roni-technical-training Feature",
+        "description": "The feature that activates elements of the roni-technical-training solution.",
+        "id": "358310b7-0451-4952-8fd9-f3fa2ab8f0dd",
+        "version": "1.0.0.0"
+      }
+    ],
+    "webApiPermissionRequests": [
+      {
+        "resource": "LPManager-Backend-App",
+        "scope": "user_impersonation"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/roni-technical-training.sppkg"
+  }
+}

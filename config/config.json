@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "roni-technical-training-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/roniTechnicalTraining/RoniTechnicalTrainingWebPart.js",
+          "manifest": "./src/webparts/roniTechnicalTraining/RoniTechnicalTrainingWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "RoniTechnicalTrainingWebPartStrings": "lib/webparts/roniTechnicalTraining/loc/{locale}.js"
+  }
+}

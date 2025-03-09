@@ -1,0 +1,19 @@
+declare interface IRoniTechnicalTrainingWebPartStrings {
+  PropertyPaneDescription: string;
+  BasicGroupName: string;
+  DescriptionFieldLabel: string;
+  AppLocalEnvironmentSharePoint: string;
+  AppLocalEnvironmentTeams: string;
+  AppLocalEnvironmentOffice: string;
+  AppLocalEnvironmentOutlook: string;
+  AppSharePointEnvironment: string;
+  AppTeamsTabEnvironment: string;
+  AppOfficeEnvironment: string;
+  AppOutlookEnvironment: string;
+  UnknownEnvironment: string;
+}
+
+declare module 'RoniTechnicalTrainingWebPartStrings' {
+  const strings: IRoniTechnicalTrainingWebPartStrings;
+  export = strings;
+}
