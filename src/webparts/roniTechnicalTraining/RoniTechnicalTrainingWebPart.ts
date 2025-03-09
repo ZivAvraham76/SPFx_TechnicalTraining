@@ -17,6 +17,7 @@ import { IRoniTechnicalTrainingProps } from './components/IRoniTechnicalTraining
 export interface IRoniTechnicalTrainingWebPartProps {
   description: string;
   pillars: string[];
+  checkbox: string[];
   [key: string]: any;
   //here we add all the input fildes names from the client
 
@@ -26,8 +27,7 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
 
   private Client: AadHttpClient;
   private trainingData: any;
-  private newPilar: string = '';
-  private checkbox: string[];
+  private newPillar: string = '';
   //roni
   // private ClientId: any;
 
@@ -80,8 +80,8 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
             if (!this.properties.pillars) {
               this.properties.pillars = [];
             }
-            if (!this.checkbox){
-              this.checkbox = [];
+            if (!this.properties.checkbox){
+              this.properties.checkbox = [];
             }
             resolve();
           });
@@ -116,23 +116,22 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
     
     if (propertyPath.startsWith('pillar_')) {
       const index = parseInt(propertyPath.split('_')[1], 10);
-      console.log(this.checkbox)
       if (newValue===false) {
-        this.properties.pillars = this.properties.pillars.filter(p => p !== this.checkbox[index]);
+        this.properties.pillars = this.properties.pillars.filter(p => p !== this.properties.checkbox[index]);
         console.log(this.properties.pillars)
         this.context.propertyPane.refresh();
         this.render();
 
       }
-      else if (this.properties.pillars.indexOf(this.checkbox[index]) === -1) {
-        this.properties.pillars = [...this.properties.pillars, this.checkbox[index]];
+      else if (this.properties.pillars.indexOf(this.properties.checkbox[index]) === -1) {
+        this.properties.pillars = [...this.properties.pillars, this.properties.checkbox[index]];
         this.context.propertyPane.refresh();
         this.render();
       }
 
     }
-    if (propertyPath === "newPilar") {
-      this.newPilar = newValue;
+    if (propertyPath === "newPillar") {
+      this.newPillar = newValue;
     }
     if (propertyPath === "description") {
       this.render();
@@ -142,11 +141,12 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   }
 
   protected onPropertyPaneConfigurationComplete(): void {
-    if (this.newPilar && this.properties.pillars.indexOf(this.newPilar) === -1) {
-      this.properties.pillars = [...this.properties.pillars, this.newPilar];
-      this.checkbox = [...this.checkbox, this.newPilar]
-      this.newPilar = '';
+    if (this.newPillar && this.properties.pillars.indexOf(this.newPillar) === -1) {
+      this.properties.pillars = [...this.properties.pillars, this.newPillar];
+      this.properties.checkbox = [...this.properties.checkbox, this.newPillar]
+      this.newPillar = '';
     }
+    this.context.propertyPane.refresh();
     this.render()
   }
 
@@ -159,7 +159,7 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    const dynamicFields = this.checkbox.map((pillar, index) => 
+    const dynamicFields = this.properties.checkbox.map((pillar, index) => 
       PropertyPaneCheckbox(`pillar_${index}`, {
         text: pillar,
         checked: true
@@ -186,7 +186,7 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
             {
               groupName: "Dynamic Fields",
               groupFields: [
-                PropertyPaneTextField('newPilar', {
+                PropertyPaneTextField('newPillar', {
                   label: "Add a new pilar",
                   description: "Type the pilar name and press enter",
                   onGetErrorMessage: (value) => {
