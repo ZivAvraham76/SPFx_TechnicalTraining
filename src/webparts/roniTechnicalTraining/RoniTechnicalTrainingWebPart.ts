@@ -84,16 +84,16 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
           .then((client: AadHttpClient): void => {
             this.Client = client;
             if (!this.properties.pillars) {
-              this.properties.pillars = [];
+              this.properties.pillars = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
             }
             if (!this.properties.levels) {
-              this.properties.levels = [];
+              this.properties.levels = [ "All levels","Fundamentals","Advanced", "Expert"];
             }
             if (!this.properties.checkboxPillars) {
-              this.properties.checkboxPillars = [];
+              this.properties.checkboxPillars = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
             }
             if (!this.properties.checkboxLevel) {
-              this.properties.checkboxLevel = [];
+              this.properties.checkboxLevel = [ "All levels","Fundamentals","Advanced", "Expert"];
             }
             resolve();
           });
