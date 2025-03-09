@@ -26,7 +26,6 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
         const matchesFilter = selectedFilter === 'All' || course.pillar === selectedFilter;// Check if course matches the selected filter based on pillar
         const matchesLevel = (selectedLevel === 'Select Product' || selectedLevel === 'All levels') || course.levelName === selectedLevel;// Check if course matches the selected level
         const hasValidPercentage = course.PercentageComplete !== null && course.PercentageComplete !== undefined;
-        // setCurrentIndex(0);
         // Include course only if both conditions are true
         return matchesFilter && matchesLevel && hasValidPercentage;
     });
@@ -35,10 +34,10 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
     }, [filteredCourses.length]);
     const [left, setLeft] = React.useState(false);
     const [right, setRight] = React.useState(false);
-    const handleNext = () => {
+    const handleNext = (): void => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredCourses.length);
     };
-    const handlePrev = () => {
+    const handlePrev = (): void => {
         setCurrentIndex((prevIndex) => 
             (prevIndex - 1 + filteredCourses.length) % filteredCourses.length
         );

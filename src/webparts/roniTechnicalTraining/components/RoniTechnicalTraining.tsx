@@ -7,19 +7,19 @@ import Pillars from './Pillars';
 import Levels from './Levels';
 
 const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps>= (props) => {
-  const { trainingData, description , pillars} = props;
+  const { trainingData, description , pillars, levels} = props;
   // State to manage the currently selected subject filter
   const [selectedFilter, setSelectedFilter] = useState('All');
   // State to manage the currently selected difficulty level filter
   const [selectedLevel, setSelectedLevel] = useState('Select Product');
 
   // Function to handle changes in the course subject filter
-  const handleFilter = (filter: string) => {
+  const handleFilter = (filter: string): void => {
     setSelectedFilter(filter);
   };
 
   // Function to handle changes in the level filter
-  const handleLevelChange = (level: string) => {
+  const handleLevelChange = (level: string): void => {
     setSelectedLevel(level);
   };
 
@@ -29,7 +29,7 @@ const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps>= (props) => {
       <div className="text-[#ee0c5d] text-[22px] font-semibold font-poppins antialiased">{description}</div>
       <div className="flex justify-right items-center p-2 gap-4 mt-2 ">
         <Pillars selectedFilter={selectedFilter} onFilterChange={handleFilter} pillars={pillars}/>
-        <Levels selectedLevel={selectedLevel} onLevelChange={handleLevelChange} />
+        <Levels selectedLevel={selectedLevel} onLevelChange={handleLevelChange} levels={levels} />
       </div>
       <div id="carousel" className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth p-4"
         style={{ scrollSnapType: 'x mandatory', width: '100%', display: 'flex', flexWrap: 'nowrap' }}>

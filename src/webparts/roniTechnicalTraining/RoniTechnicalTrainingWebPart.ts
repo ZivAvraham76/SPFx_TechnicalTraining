@@ -17,10 +17,11 @@ import { IRoniTechnicalTrainingProps } from './components/IRoniTechnicalTraining
 export interface IRoniTechnicalTrainingWebPartProps {
   description: string;
   pillars: string[];
-  checkbox: string[];
+  levels: string[];
+  checkboxLevel: string[];
+  checkboxPillars: string[];
   [key: string]: any;
-  //here we add all the input fildes names from the client
-
+  backend_app_id: string;
 }
 
 export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<IRoniTechnicalTrainingWebPartProps> {
@@ -28,12 +29,15 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   private Client: AadHttpClient;
   private trainingData: any;
   private newPillar: string = '';
-  //roni
-  // private ClientId: any;
+  private newLevel: string = '';
 
 
 
   public render(): void {
+    if(!this.properties.backend_app_id){
+      this.domElement.innerHTML = `<p>No backend_app_id</p>`;
+      return;
+    } else 
     if (!this.trainingData) {
       this.domElement.innerHTML = `<p>Loading...</p>`;
 
@@ -63,7 +67,8 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
       {
         trainingData: this.trainingData,
         description: this.properties.description || "Technical Training",
-        pillars: this.properties.pillars || []
+        pillars: this.properties.pillars || [],
+        levels: this.properties.levels || []
       }
     );
 
@@ -74,15 +79,10 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
     return new Promise<void>(
       (resolve: () => void, reject: (err: any) => void): void => {
         this.context.aadHttpClientFactory
-          .getClient("api://56214ef0-66f7-4e05-b871-eed7a16a7fb8/")
+        //56214ef0-66f7-4e05-b871-eed7a16a7fb8
+          .getClient(`api://${this.properties.backend_app_id}/`)
           .then((client: AadHttpClient): void => {
             this.Client = client;
-            if (!this.properties.pillars) {
-              this.properties.pillars = [];
-            }
-            if (!this.properties.checkbox){
-              this.properties.checkbox = [];
-            }
             resolve();
           });
       }
@@ -112,39 +112,79 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   protected get disableReactivePropertyChanges(): boolean {
     return true;
   }
+protected Sort(order: string | string[], proprty: any[]): void{
+  proprty.sort((a, b) => {
+    const indexA = order.indexOf(a);
+    const indexB = order.indexOf(b);
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+}
+
   protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
     
     if (propertyPath.startsWith('pillar_')) {
       const index = parseInt(propertyPath.split('_')[1], 10);
+      const thisPillar = this.properties.checkboxPillars[index]
       if (newValue===false) {
-        this.properties.pillars = this.properties.pillars.filter(p => p !== this.properties.checkbox[index]);
-        console.log(this.properties.pillars)
+        this.properties.pillars = this.properties.pillars.filter(p => p !== thisPillar);
+        this.context.propertyPane.refresh();
+        this.render();
+      }
+      else if (this.properties.pillars.indexOf(thisPillar) === -1) {
+        this.properties.pillars = [...this.properties.pillars, thisPillar];
+        const order = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
+        this.Sort(order, this.properties.pillars)
+        this.context.propertyPane.refresh();
+        this.render();
+      }
+    }
+    if (propertyPath.startsWith('level_')) {
+      const index = parseInt(propertyPath.split('_')[1], 10);
+      const thisLevel = this.properties.checkboxLevel[index]
+      if (newValue===false) {
+        this.properties.levels = this.properties.levels.filter(p => p !== thisLevel);
         this.context.propertyPane.refresh();
         this.render();
 
       }
-      else if (this.properties.pillars.indexOf(this.properties.checkbox[index]) === -1) {
-        this.properties.pillars = [...this.properties.pillars, this.properties.checkbox[index]];
+      else if (this.properties.levels.indexOf(thisLevel) === -1) {
+        this.properties.levels = [...this.properties.levels, thisLevel];
+        const order = [ "All levels","Fundamentals","Advanced", "Expert"];
+        this.Sort(order, this.properties.levels)
         this.context.propertyPane.refresh();
         this.render();
       }
-
     }
     if (propertyPath === "newPillar") {
       this.newPillar = newValue;
     }
     if (propertyPath === "description") {
+
       this.render();
     }
-    
+    if (propertyPath==="backend_app_id"){
+      this.onInit();
+    }
+    if (propertyPath==="newLevel"){
+      this.newLevel = newValue;
+
+    }
  
   }
 
   protected onPropertyPaneConfigurationComplete(): void {
     if (this.newPillar && this.properties.pillars.indexOf(this.newPillar) === -1) {
       this.properties.pillars = [...this.properties.pillars, this.newPillar];
-      this.properties.checkbox = [...this.properties.checkbox, this.newPillar]
+      this.properties.checkboxPillars = [...this.properties.checkboxPillars, this.newPillar]
       this.newPillar = '';
+    }
+    if (this.newLevel && this.properties.levels.indexOf(this.newLevel) === -1) {
+      this.properties.levels = [...this.properties.levels, this.newLevel];
+      this.properties.checkboxLevel = [...this.properties.checkboxLevel, this.newLevel]
+      this.newLevel = '';
     }
     this.context.propertyPane.refresh();
     this.render()
@@ -159,13 +199,19 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    const dynamicFields = this.properties.checkbox.map((pillar, index) => 
+    const dynamicPilars = this.properties.checkboxPillars.map((pillar, index) => 
       PropertyPaneCheckbox(`pillar_${index}`, {
         text: pillar,
         checked: true
-        
       })
-  
+
+    );
+    const dynamicLevels= this.properties.checkboxLevel.map((level, index) => 
+      PropertyPaneCheckbox(`level_${index}`, {
+        text: level,
+        checked: true
+      })
+
     );
 
     return {
@@ -178,26 +224,46 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
             {
               groupName: strings.BasicGroupName,
               groupFields: [
+                PropertyPaneTextField('backend_app_id',{
+                  label: "Please enter backend app id"
+                }),
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 })
               ]
             },
             {
-              groupName: "Dynamic Fields",
+              groupName: "Pillars",
               groupFields: [
                 PropertyPaneTextField('newPillar', {
-                  label: "Add a new pilar",
-                  description: "Type the pilar name and press enter",
+                  label: "Add a new pillar",
+                  description: "Type the pillar name and press enter",
                   onGetErrorMessage: (value) => {
                     if (this.properties.pillars.indexOf(value) !== -1) {
-                      return "Pilar already exists!";
+                      return "Pillar already exists!";
                     }
                     return "";
                   }
                 }),
-                ...dynamicFields
+                ...dynamicPilars
               ]
+            },
+            {
+              groupName: "Levels",
+              groupFields: [
+                PropertyPaneTextField('newLevel',{
+                  label: "Add a new level",
+                  description: "Type the level name and press enter",
+                  onGetErrorMessage: (value) => {
+                    if (this.properties.pillars.indexOf(value) !== -1) {
+                      return "Level already exists!";
+                    }
+                    return "";
+                  },
+                  ...dynamicLevels
+                }),
+              ]
+
             }
           ]
         }

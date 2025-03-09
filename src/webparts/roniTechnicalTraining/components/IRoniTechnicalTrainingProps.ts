@@ -7,6 +7,7 @@ export interface IRoniTechnicalTrainingProps {
   };
   description: string; 
   pillars: string[];
+  levels: string[];
 
 
   // selectedFilter: string;

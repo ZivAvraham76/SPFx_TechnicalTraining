@@ -25,7 +25,10 @@
       //update the property added in RoniTechnicalTrainingWebPart.ts here
       "description": "Technical Training",
       "pillars": ["Quantum", "Harmony", "CloudGuard", "Infinity"],
-      "checkbox" :["Quantum", "Harmony", "CloudGuard", "Infinity"]
+      "checkboxPillars" :["Quantum", "Harmony", "CloudGuard", "Infinity"],
+      "levels" :[ "All levels","Fundamentals","Advanced", "Expert"],
+      "checkboxLevel" :[ "All levels","Fundamentals","Advanced", "Expert"]
+      // "backend_app_id": "56214ef0-66f7-4e05-b871-eed7a16a7fb8"
     }
   }]
 }

@@ -8,14 +8,17 @@ import '../../../../assets/dist/tailwind.css';
 interface LevelsProps {
     selectedLevel: string;// Currently selected level
     onLevelChange: (level: string) => void;// Callback function to handle level changes
+    levels: string[]
+
 }
 
 // Functional component to render a dropdown for selecting course levels
-const Levels: React.FC<LevelsProps> = ({ selectedLevel, onLevelChange }) => {
-    const levels = [ 'All levels','Fundamentals','Advanced', 'Expert'];
+const Levels: React.FC<LevelsProps> = ({ selectedLevel, onLevelChange, levels}) => {
+    const allLevels= levels
+    // const levels = [ 'All levels','Fundamentals','Advanced', 'Expert'];
     const [isOpen, setIsOpen] = useState(false);
-    const toggleDropdown = () => setIsOpen(!isOpen);
-    const handleLevelClick = (level: string) => {
+    const toggleDropdown = (): void => setIsOpen(!isOpen);
+    const handleLevelClick = (level: string): void => {
         onLevelChange(level);
         setIsOpen(false);
     };
@@ -32,7 +35,7 @@ const Levels: React.FC<LevelsProps> = ({ selectedLevel, onLevelChange }) => {
 
     {isOpen && (
         <div className="absolute mt-2 w-36 rounded-md bg-white shadow-lg ring-1 ring-black/5 z-50">
-            {levels.map((level) => (
+            {allLevels.map((level) => (
                 <button
                     key={level}
                     onClick={() => handleLevelClick(level)}
