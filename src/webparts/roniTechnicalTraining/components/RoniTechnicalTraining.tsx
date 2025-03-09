@@ -11,7 +11,7 @@ const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps>= (props) => {
   // State to manage the currently selected subject filter
   const [selectedFilter, setSelectedFilter] = useState('All');
   // State to manage the currently selected difficulty level filter
-  const [selectedLevel, setSelectedLevel] = useState('Select Product');
+  const [selectedLevel, setSelectedLevel] = useState('Select Level');
 
   // Function to handle changes in the course subject filter
   const handleFilter = (filter: string): void => {

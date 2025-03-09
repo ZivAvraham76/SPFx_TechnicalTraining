@@ -260,8 +260,8 @@ protected Sort(order: string | string[], proprty: any[]): void{
                     }
                     return "";
                   },
-                  ...dynamicLevels
                 }),
+                ...dynamicLevels
               ]
 
             }
