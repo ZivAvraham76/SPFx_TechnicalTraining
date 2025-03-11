@@ -13,6 +13,9 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'RoniTechnicalTrainingWebPartStrings';
 import RoniTechnicalTraining from './components/RoniTechnicalTraining';
 import { IRoniTechnicalTrainingProps } from './components/IRoniTechnicalTrainingProps';
+import { Course } from './components/IRoniTechnicalTrainingProps';
+import {badgesPointsData} from './components/IRoniTechnicalTrainingProps';
+
 
 export interface IRoniTechnicalTrainingWebPartProps {
   description: string;
@@ -20,47 +23,60 @@ export interface IRoniTechnicalTrainingWebPartProps {
   levels: string[];
   checkboxLevel: string[];
   checkboxPillars: string[];
-  [key: string]: any;
+  newPillar?: string;
+  newLevel?: string;
   backend_app_id: string;
 }
 
+interface TrainingData {
+  producttraining: Course[];
+  user: {
+    userBadgesPointsData: badgesPointsData[];
+  };
+}
+type PropertyPaneFieldValue = string | boolean | number | undefined;
 export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<IRoniTechnicalTrainingWebPartProps> {
 
   private Client: AadHttpClient;
-  private trainingData: any;
+  private trainingData: {
+    producttraining: Course[];
+    user: {
+      userBadgesPointsData: badgesPointsData[];
+    };
+  };
   private newPillar: string = '';
   private newLevel: string = '';
 
 
 
   public render(): void {
-    if(!this.properties.backend_app_id){
+    if (!this.properties.backend_app_id) {
       this.domElement.innerHTML = `<p>No backend_app_id</p>`;
       return;
-    } else 
-    if (!this.trainingData) {
-      this.domElement.innerHTML = `<p>Loading...</p>`;
+    } else
+      if (!this.trainingData) {
+        this.domElement.innerHTML = `<p>Loading...</p>`;
 
-      this.Client.get(
-        "http://localhost:3001/sp-data/4sp",
-        AadHttpClient.configurations.v1
-      )
-        .then((response: HttpClientResponse): Promise<any> => {
-          if (!response.ok) {
-            throw new Error(`API error: ${response.statusText}`);
-          }
-          return response.json();
-        })
-        .then((data: any): void => {
-          this.trainingData = data;
-          this.render(); // Re-render after data is fetched
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+        this.Client.get(
+          "http://localhost:3001/sp-data/4sp",
+          AadHttpClient.configurations.v1
+        )
+          .then((response: HttpClientResponse): Promise<TrainingData> => {
+            if (!response.ok) {
+              throw new Error(`API error: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((data: TrainingData): void => {
+            this.trainingData = data;
+            this.render(); // Re-render after data is fetched
+          })
+          .catch((error) => {
+            console.error(error);
+          });
 
-      return;
-    }
+        return;
+      }
 
     const element: React.ReactElement<IRoniTechnicalTrainingProps> = React.createElement(
       RoniTechnicalTraining,
@@ -77,9 +93,9 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
 
   protected onInit(): Promise<void> {
     return new Promise<void>(
-      (resolve: () => void, reject: (err: any) => void): void => {
+      (resolve: () => void, reject: (err: Error) => void): void => {
         this.context.aadHttpClientFactory
-        //56214ef0-66f7-4e05-b871-eed7a16a7fb8
+          //56214ef0-66f7-4e05-b871-eed7a16a7fb8
           .getClient(`api://${this.properties.backend_app_id}/`)
           .then((client: AadHttpClient): void => {
             this.Client = client;
@@ -87,16 +103,17 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
               this.properties.pillars = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
             }
             if (!this.properties.levels) {
-              this.properties.levels = [ "All levels","Fundamentals","Advanced", "Expert"];
+              this.properties.levels = ["All levels", "Fundamentals", "Advanced", "Expert"];
             }
             if (!this.properties.checkboxPillars) {
               this.properties.checkboxPillars = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
             }
             if (!this.properties.checkboxLevel) {
-              this.properties.checkboxLevel = [ "All levels","Fundamentals","Advanced", "Expert"];
+              this.properties.checkboxLevel = ["All levels", "Fundamentals", "Advanced", "Expert"];
             }
             resolve();
-          });
+          })
+          .catch((err: Error) => reject(err)); // Handle promise rejection with Error type
       }
     );
   }
@@ -124,23 +141,25 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   protected get disableReactivePropertyChanges(): boolean {
     return true;
   }
-protected Sort(order: string | string[], proprty: any[]): void{
-  proprty.sort((a, b) => {
-    const indexA = order.indexOf(a);
-    const indexB = order.indexOf(b);
-    if (indexA === -1 && indexB === -1) return 0;
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
-    return indexA - indexB;
-  });
-}
 
-  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
-    
+  protected Sort(order: string | string[], proprty: string[]): void {
+    proprty.sort((a, b) => {
+      const indexA = order.indexOf(a);
+      const indexB = order.indexOf(b);
+      if (indexA === -1 && indexB === -1) return 0;
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+  }
+
+
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: PropertyPaneFieldValue, newValue: PropertyPaneFieldValue): void {
+
     if (propertyPath.startsWith('pillar_')) {
       const index = parseInt(propertyPath.split('_')[1], 10);
       const thisPillar = this.properties.checkboxPillars[index]
-      if (newValue===false) {
+      if (newValue === false) {
         this.properties.pillars = this.properties.pillars.filter(p => p !== thisPillar);
         this.context.propertyPane.refresh();
         this.render();
@@ -156,7 +175,7 @@ protected Sort(order: string | string[], proprty: any[]): void{
     if (propertyPath.startsWith('level_')) {
       const index = parseInt(propertyPath.split('_')[1], 10);
       const thisLevel = this.properties.checkboxLevel[index]
-      if (newValue===false) {
+      if (newValue === false) {
         this.properties.levels = this.properties.levels.filter(p => p !== thisLevel);
         this.context.propertyPane.refresh();
         this.render();
@@ -164,27 +183,26 @@ protected Sort(order: string | string[], proprty: any[]): void{
       }
       else if (this.properties.levels.indexOf(thisLevel) === -1) {
         this.properties.levels = [...this.properties.levels, thisLevel];
-        const order = [ "All levels","Fundamentals","Advanced", "Expert"];
+        const order = ["All levels", "Fundamentals", "Advanced", "Expert"];
         this.Sort(order, this.properties.levels)
         this.context.propertyPane.refresh();
         this.render();
       }
     }
     if (propertyPath === "newPillar") {
-      this.newPillar = newValue;
+      this.newPillar = newValue as string;
     }
     if (propertyPath === "description") {
 
       this.render();
     }
-    if (propertyPath==="backend_app_id"){
-      this.onInit();
+    if (propertyPath === "backend_app_id") {
+      this.onInit().catch(err => console.error(err)); // Handle promise rejection
     }
-    if (propertyPath==="newLevel"){
-      this.newLevel = newValue;
+    if (propertyPath === "newLevel") {
+      this.newLevel = newValue as string;
 
     }
- 
   }
 
   protected onPropertyPaneConfigurationComplete(): void {
@@ -211,14 +229,14 @@ protected Sort(order: string | string[], proprty: any[]): void{
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    const dynamicPilars = this.properties.checkboxPillars.map((pillar, index) => 
+    const dynamicPilars = this.properties.checkboxPillars.map((pillar, index) =>
       PropertyPaneCheckbox(`pillar_${index}`, {
         text: pillar,
         checked: true
       })
 
     );
-    const dynamicLevels= this.properties.checkboxLevel.map((level, index) => 
+    const dynamicLevels = this.properties.checkboxLevel.map((level, index) =>
       PropertyPaneCheckbox(`level_${index}`, {
         text: level,
         checked: true
@@ -236,7 +254,7 @@ protected Sort(order: string | string[], proprty: any[]): void{
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('backend_app_id',{
+                PropertyPaneTextField('backend_app_id', {
                   label: "Please enter backend app id"
                 }),
                 PropertyPaneTextField('description', {
@@ -263,7 +281,7 @@ protected Sort(order: string | string[], proprty: any[]): void{
             {
               groupName: "Levels",
               groupFields: [
-                PropertyPaneTextField('newLevel',{
+                PropertyPaneTextField('newLevel', {
                   label: "Add a new level",
                   description: "Type the level name and press enter",
                   onGetErrorMessage: (value) => {

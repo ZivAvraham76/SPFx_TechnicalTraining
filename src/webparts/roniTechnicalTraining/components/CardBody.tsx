@@ -1,15 +1,17 @@
 import * as React from "react";
 import ProgressRing from "./Percentage";
 import '../../../../assets/dist/tailwind.css';
+// import Sidebar from "./SideMenu";
+
 
 interface CardBodyProps {
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     litmosLearningPathName: string;
     litmosLearningPathUrl: string;
     PercentageComplete: number;
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete }) => {
-
+const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, setIsOpen }) => {
     return (
         <div className="h-[117-px] p-4 flex flex-col justify-between h-full relative">
             {/* Main Section: litmos Learning Path Name */}
@@ -29,8 +31,8 @@ const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearn
                 <div className="w-[106px] h-[22px] px-2 py-0.5 bg-[#ee0c5d] rounded-xl flex justify-center items-center">
                     <button
                         className="text-white text-xs font-normal"
-                        onClick={() => window.open(litmosLearningPathUrl, `_blank`)}
-                    >
+                        onClick={() => setIsOpen(prev => !prev)} // Toggle sidebar
+                        >
                         Learning Path
                     </button>
                 </div>

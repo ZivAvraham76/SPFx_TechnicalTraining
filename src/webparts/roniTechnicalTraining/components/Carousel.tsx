@@ -16,9 +16,11 @@ interface CourseCarouselProps {
     courses: Course[];
     selectedFilter: string;// Currently selected filter
     selectedLevel: string;// Currently selected level
+    isOpen: boolean
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 // Main CourseCarousel component definition
-const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel }) => {
+const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel,setIsOpen }) => {
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
     // Filter courses based on the selected filter and level
@@ -38,7 +40,7 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
         setCurrentIndex((prevIndex) => (prevIndex + 1) % filteredCourses.length);
     };
     const handlePrev = (): void => {
-        setCurrentIndex((prevIndex) => 
+        setCurrentIndex((prevIndex) =>
             (prevIndex - 1 + filteredCourses.length) % filteredCourses.length
         );
     };
@@ -67,9 +69,10 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
                 style={{ transform: `translateX(-${currentIndex * 25}%)` }}
             >
                 {filteredCourses.map((course, index) => (
-                    <div className={`relative w-1/4 flex-shrink-0 ${index === currentIndex ? 'active' : ''}`}>
-                        <Card data={course} />
+                    <div key={index} className={`relative w-1/4 flex-shrink-0`}>
+                        <Card data={course} setIsOpen={setIsOpen}  />
                     </div>
+
                 ))}
             </div>
             {!right && (
