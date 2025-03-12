@@ -25,7 +25,7 @@ const Levels: React.FC<LevelsProps> = ({ selectedLevel, onLevelChange, levels })
     return (
         <div className="relative inline-block text-left h-full">
             <button onClick={toggleDropdown} className="w-[170px] h-8 px-2 py-1 pr-8 rounded-full text-[#41273c] text-lg border border-[#41273c] flex items-center">
-                <span className="text-[#41273c] text-sm font-medium">
+                <span className="text-[#41273c] text-xs font-medium">
                     {selectedLevel === "All Levels" ? "Select Level" : selectedLevel}
                 </span>
                 <svg className="absolute right-2" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

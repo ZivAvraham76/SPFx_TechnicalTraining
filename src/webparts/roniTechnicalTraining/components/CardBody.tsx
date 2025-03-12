@@ -13,7 +13,7 @@ interface CardBodyProps {
 
 const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, setIsOpen }) => {
     return (
-        <div className="h-[117-px] p-4 flex flex-col justify-between h-full relative">
+        <div className=" p-4 flex flex-col justify-between relative h-full">
             {/* Main Section: litmos Learning Path Name */}
             <div className="relative group">
                 <h2 className="text-md font-semibold text-[#41273c] line-clamp-2">
