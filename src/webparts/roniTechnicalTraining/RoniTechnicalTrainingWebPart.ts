@@ -14,7 +14,7 @@ import * as strings from 'RoniTechnicalTrainingWebPartStrings';
 import RoniTechnicalTraining from './components/RoniTechnicalTraining';
 import { IRoniTechnicalTrainingProps } from './components/IRoniTechnicalTrainingProps';
 import { Course } from './components/IRoniTechnicalTrainingProps';
-import {badgesPointsData} from './components/IRoniTechnicalTrainingProps';
+import { badgesPointsData } from './components/IRoniTechnicalTrainingProps';
 
 
 export interface IRoniTechnicalTrainingWebPartProps {
@@ -26,6 +26,7 @@ export interface IRoniTechnicalTrainingWebPartProps {
   newPillar?: string;
   newLevel?: string;
   backend_app_id: string;
+  backend_url: string;
 }
 
 interface TrainingData {
@@ -53,12 +54,17 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
     if (!this.properties.backend_app_id) {
       this.domElement.innerHTML = `<p>No backend_app_id</p>`;
       return;
+    }
+    else if (!this.properties.backend_url) {
+      this.domElement.innerHTML = `<p>No backend URL</p>`;
+      return;
+
     } else
       if (!this.trainingData) {
         this.domElement.innerHTML = `<p>Loading...</p>`;
 
         this.Client.get(
-          "http://localhost:3001/sp-data/4sp",
+          `${this.properties.backend_url}`,
           AadHttpClient.configurations.v1
         )
           .then((response: HttpClientResponse): Promise<TrainingData> => {
@@ -197,8 +203,12 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
       this.render();
     }
     if (propertyPath === "backend_app_id") {
-      this.onInit().catch(err => console.error(err)); // Handle promise rejection
+      this.onInit().catch(err => console.error(err));
     }
+    if (propertyPath === "backend_url") {
+      this.onInit().catch(err => console.error(err));
+    }
+
     if (propertyPath === "newLevel") {
       this.newLevel = newValue as string;
 
@@ -256,6 +266,10 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
               groupFields: [
                 PropertyPaneTextField('backend_app_id', {
                   label: "Please enter backend app id"
+                }),
+                PropertyPaneTextField('backend_url', {
+                  label: "Please enter backend url"
+
                 }),
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel

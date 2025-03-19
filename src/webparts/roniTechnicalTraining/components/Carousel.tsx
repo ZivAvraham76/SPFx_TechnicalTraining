@@ -65,7 +65,7 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
     return (
         <div className='relative w-full mx-auto overflow-hidden'>
             <div
-                className="flex transition-transform duration-500 ease-in-out gap-[25px]"
+                className="flex transition-transform duration-500 ease-in-out gap-[15px]"
                 style={{ transform: `translateX(-${currentIndex * 25}%)` }}
             >
                 {filteredCourses.map((course, index) => (
@@ -76,7 +76,7 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
                 ))}
             </div>
             {!right && (
-                <button className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100" onClick={handleNext}>
+                <button className="border border-[#41273c] absolute top-1/2 right-2 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100" onClick={handleNext}>
                     <svg
                         className="h-4 w-4 text-gray-800"
                         aria-hidden="true"
@@ -93,7 +93,7 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
                         />
                     </svg></button>
             )}
-            {!left && (<button className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100" onClick={handlePrev}>
+            {!left && (<button className="border border-[#41273c] absolute top-1/2 left-2 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100" onClick={handlePrev}>
                 <svg
                     className="h-4 w-4 text-gray-800"
                     aria-hidden="true"

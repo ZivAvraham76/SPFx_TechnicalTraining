@@ -6,6 +6,7 @@ import CourseCarousel from './Carousel';
 import Pillars from './Pillars';
 import Levels from './Levels';
 import Sidebar from './SideMenu';
+
 const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps> = (props) => {
   const { trainingData, description, pillars, levels } = props;
 
@@ -27,7 +28,7 @@ const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps> = (props) => 
 
 
   return (
-    <div className="w-full  relative overflow-x-hidden p-4">
+    <div className="w-full relative overflow-x-hidden p-4 ">
       <div className='absolute right-0 top-0 overflow-visble'>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
@@ -46,7 +47,6 @@ const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps> = (props) => 
       </div>
 
     </div>
-
   );
 };
 export default RoniTechnicalTraining;
