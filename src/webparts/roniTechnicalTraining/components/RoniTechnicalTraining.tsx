@@ -5,7 +5,7 @@ import '../../../../assets/dist/tailwind.css';
 import CourseCarousel from './Carousel';
 import Pillars from './Pillars';
 import Levels from './Levels';
-import Sidebar from './SideMenu';
+// import Sidebar from './SideMenu';
 
 const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps> = (props) => {
   const { trainingData, description, pillars, levels } = props;
@@ -29,9 +29,9 @@ const RoniTechnicalTraining: React.FC<IRoniTechnicalTrainingProps> = (props) => 
 
   return (
     <div className="w-full relative overflow-x-hidden p-4 ">
-      <div className='absolute right-0 top-0 overflow-visble'>
+      {/* <div className='absolute right-0 top-0 overflow-visble'>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      </div>
+      </div> */}
       <div className="text-[#ee0c5d] text-[22px] font-semibold font-poppins antialiased mb-8">{description}</div>
       <div className="flex items-center justify-start space-x-4 p-2 max-w-full mb-8 overflow-visible
  ">
