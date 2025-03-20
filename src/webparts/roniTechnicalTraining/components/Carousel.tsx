@@ -16,11 +16,10 @@ interface CourseCarouselProps {
     courses: Course[];
     selectedFilter: string;// Currently selected filter
     selectedLevel: string;// Currently selected level
-    isOpen: boolean
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onOpenPopup: () => void;
 }
 // Main CourseCarousel component definition
-const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel,setIsOpen }) => {
+const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel,onOpenPopup }) => {
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
     // Filter courses based on the selected filter and level
@@ -70,7 +69,7 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
             >
                 {filteredCourses.map((course, index) => (
                     <div key={index} className={`relative w-1/4 flex-shrink-0`}>
-                        <Card data={course} setIsOpen={setIsOpen}  />
+                        <Card data={course} onOpenPopup={onOpenPopup}  />
                     </div>
 
                 ))}

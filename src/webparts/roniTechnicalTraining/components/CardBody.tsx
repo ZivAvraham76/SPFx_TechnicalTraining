@@ -5,13 +5,13 @@ import '../../../../assets/dist/tailwind.css';
 
 
 interface CardBodyProps {
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onOpenPopup: () => void; 
     litmosLearningPathName: string;
     litmosLearningPathUrl: string;
     PercentageComplete: number;
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, setIsOpen }) => {
+const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, onOpenPopup }) => {
     return (
         <div className=" p-4 flex flex-col justify-between relative h-full">
             {/* Main Section: litmos Learning Path Name */}
@@ -31,7 +31,7 @@ const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearn
                 <div className="w-[106px] h-[22px] px-2 py-0.5 bg-[#ee0c5d] rounded-xl flex justify-center items-center">
                     <button
                         className="text-white text-xs font-normal"
-                        onClick={() => setIsOpen(prev => !prev)} // Toggle sidebar
+                        onClick={onOpenPopup}
                         >
                         Learning Path
                     </button>

@@ -13,24 +13,23 @@ build.rig.getTasks = function () {
   return result;
 };
 
+'use strict';
 // add this above initialization
 const path = require("path")
-
 // add task to build tailwind css
 const postcss = require("gulp-postcss")
 const atimport = require("postcss-import")
 const tailwind = require("tailwindcss")
-
 const tailwindcss = build.subTask(
-  "tailwindcss",
-  function (gulp, buildOptions, done) {
-    gulp
-      .src("assets/tailwind.css")
-      .pipe(postcss([atimport(), tailwind("./tailwind.config.js")]))
-      .pipe(gulp.dest("assets/dist"))
-    done()
-  }
+"tailwindcss",
+function (gulp, buildOptions, done) {
+gulp
+.src("assets/tailwind.css")
+.pipe(postcss([atimport(), tailwind("./tailwind.config.js")]))
+.pipe(gulp.dest("assets/dist"))
+done()
+}
 )
 build.rig.addPreBuildTask(tailwindcss)
 
-build.initialize(require("gulp"))
+build.initialize(require('gulp'));
