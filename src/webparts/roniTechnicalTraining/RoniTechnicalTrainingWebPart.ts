@@ -27,6 +27,7 @@ export interface IRoniTechnicalTrainingWebPartProps {
   newLevel?: string;
   backend_app_id: string;
   backend_url: string;
+  context: any;
 }
 
 interface TrainingData {
@@ -90,7 +91,9 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
         trainingData: this.trainingData,
         description: this.properties.description || "Technical Training",
         pillars: this.properties.pillars || [],
-        levels: this.properties.levels || []
+        levels: this.properties.levels || [],
+        context: this.context,
+        aadClient: this.Client,
       }
     );
 
@@ -98,6 +101,7 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
   }
 
   protected onInit(): Promise<void> {
+    console.log("Web part initializing with backend_app_id:", this.properties.backend_app_id);
     return new Promise<void>(
       (resolve: () => void, reject: (err: Error) => void): void => {
         this.context.aadHttpClientFactory
@@ -105,6 +109,8 @@ export default class RoniTechnicalTrainingWebPart extends BaseClientSideWebPart<
           .getClient(`api://${this.properties.backend_app_id}/`)
           .then((client: AadHttpClient): void => {
             this.Client = client;
+            console.log("Client successfully created for app ID:", this.properties.backend_app_id);
+            
             if (!this.properties.pillars) {
               this.properties.pillars = ["Quantum", "Harmony", "CloudGuard", "Infinity"];
             }

@@ -1,3 +1,6 @@
+import { AadHttpClient } from "@microsoft/sp-http";
+
+
 export interface Course {
   litmosLearningPathName: string;
   pillar: string;
@@ -5,6 +8,7 @@ export interface Course {
   litmosLearningPathUrl: string;
   PercentageComplete: number;
   levelName: string;
+  Id: string;
 }
 export interface badgesPointsData {
   Description?: string;
@@ -24,6 +28,8 @@ export interface IRoniTechnicalTrainingProps {
   description: string; 
   pillars: string[];
   levels: string[];
+  context: any;
+  aadClient: AadHttpClient;
 
 
   // selectedFilter: string;

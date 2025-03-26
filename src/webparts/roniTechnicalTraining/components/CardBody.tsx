@@ -4,14 +4,25 @@ import '../../../../assets/dist/tailwind.css';
 // import Sidebar from "./SideMenu";
 
 
+interface trainingObject {
+    litmosLearningPathName: string;
+    pillar: string;
+    productName: string;
+    litmosLearningPathUrl: string;
+    PercentageComplete: number;
+    levelName: string;
+    Id: string;
+  }
+
 interface CardBodyProps {
-    onOpenPopup: () => void; 
+    handleTrainingDataClick: (trainingObject: trainingObject) => void;
     litmosLearningPathName: string;
     litmosLearningPathUrl: string;
     PercentageComplete: number;
+    trainigObject: trainingObject;
 }
 
-const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, onOpenPopup }) => {
+const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearningPathUrl, PercentageComplete, handleTrainingDataClick, trainigObject }) => {
     return (
         <div className=" p-4 flex flex-col justify-between relative h-full">
             {/* Main Section: litmos Learning Path Name */}
@@ -31,7 +42,11 @@ const CardBody: React.FC<CardBodyProps> = ({ litmosLearningPathName, litmosLearn
                 <div className="w-[106px] h-[22px] px-2 py-0.5 bg-[#ee0c5d] rounded-xl flex justify-center items-center">
                     <button
                         className="text-white text-xs font-normal"
-                        onClick={onOpenPopup}
+                        onClick={() => {
+                            console.log('Learning Path button clicked with ID:', trainigObject.Id);
+                            handleTrainingDataClick(trainigObject);}
+                        }
+                            
                         >
                         Learning Path
                     </button>

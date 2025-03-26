@@ -21,10 +21,14 @@
     "@microsoft/sp-property-pane": "1.20.0",
     "@microsoft/sp-webpart-base": "1.20.0",
     "@phosphor-icons/react": "^2.1.7",
+    "@pnp/sp": "^4.11.0",
     "@tailwindcss/postcss": "^4.0.9",
+    "@types/pnpapi": "^0.0.5",
+    "axios": "^1.8.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "tslib": "2.3.1"
+    "tslib": "2.3.1",
+    "typeface-poppins": "^1.1.13"
   },
   "devDependencies": {
     "@microsoft/eslint-config-spfx": "1.20.2",

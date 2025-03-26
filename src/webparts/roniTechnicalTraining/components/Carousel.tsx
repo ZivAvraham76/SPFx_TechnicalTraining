@@ -9,17 +9,30 @@ interface Course {
     litmosLearningPathUrl: string;
     PercentageComplete: number;
     levelName: string;
+    Id: string;
 }
+
+
+interface trainingObject {
+    litmosLearningPathName: string;
+    pillar: string;
+    productName: string;
+    litmosLearningPathUrl: string;
+    PercentageComplete: number;
+    levelName: string;
+    Id: string;
+  }
 
 // Define the props for the CourseCarousel component
 interface CourseCarouselProps {
     courses: Course[];
     selectedFilter: string;// Currently selected filter
     selectedLevel: string;// Currently selected level
-    onOpenPopup: () => void;
+    handleTrainingDataClick: (trainingObject: trainingObject) => void;
+    
 }
 // Main CourseCarousel component definition
-const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel,onOpenPopup }) => {
+const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter, selectedLevel,handleTrainingDataClick}) => {
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
     // Filter courses based on the selected filter and level
@@ -27,9 +40,12 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
         const matchesFilter = selectedFilter === 'All' || course.pillar === selectedFilter;// Check if course matches the selected filter based on pillar
         const matchesLevel = (selectedLevel === 'Select Level' || selectedLevel === 'All levels') || course.levelName === selectedLevel;// Check if course matches the selected level
         const hasValidPercentage = course.PercentageComplete !== null && course.PercentageComplete !== undefined;
+    
         // Include course only if both conditions are true
         return matchesFilter && matchesLevel && hasValidPercentage;
     });
+
+    console.log("filter:",filteredCourses);
     React.useEffect(() => {
         setCurrentIndex(0);
     }, [filteredCourses.length]);
@@ -69,7 +85,13 @@ const CourseCarousel: React.FC<CourseCarouselProps> = ({ courses, selectedFilter
             >
                 {filteredCourses.map((course, index) => (
                     <div key={index} className={`relative w-1/4 flex-shrink-0`}>
-                        <Card data={course} onOpenPopup={onOpenPopup}  />
+                         <Card 
+                          trainingObject={course} 
+                          handleTrainingDataClick={(trainingObject) => {
+                            console.log('Carousel onOpenPopup called with:', trainingObject); // Add this line
+                            handleTrainingDataClick(trainingObject);
+                          }} 
+                        />
                     </div>
 
                 ))}

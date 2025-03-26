@@ -23,16 +23,16 @@ interface Course {
   isOptional?: boolean,
 }
 
-interface PopupProps {
+interface CourseBoardProps {
   courseData: Course;
-  data: {
-    VLP_NAME: string;
-    VLP_PercentageComplete: number;
-    Courses: Course[];
-  };
+  // data: {
+  //   VLP_NAME: string;
+  //   VLP_PercentageComplete: number;
+  //   Courses: Course[];
+  // };
 }
 
-const Popup: React.FC<PopupProps> = ({ courseData, data }) => {
+const CourseBoard: React.FC<CourseBoardProps> = ({ courseData }) => {
 
   // State to manage whether the course details are visible or not
   const [isVisible, SetIsVisible] = useState(false);
@@ -56,7 +56,7 @@ const Popup: React.FC<PopupProps> = ({ courseData, data }) => {
           coursePercentageComplete={courseData.PercentageComplete}
           lmsCourseUrl={courseData.LmsCourseUrl}
           isOptional={courseData.isOptional}
-          data={data}
+          
         />
       </div>
       
@@ -77,4 +77,4 @@ const Popup: React.FC<PopupProps> = ({ courseData, data }) => {
   );
 };
 
-export default Popup;
+export default CourseBoard;

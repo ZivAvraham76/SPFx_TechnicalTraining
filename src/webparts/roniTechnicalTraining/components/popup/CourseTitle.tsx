@@ -1,43 +1,43 @@
 import * as React from "react";
 import ArrowUpRightFromSquare from "./svg/ArrowUpRightFromSquare";
-import OptionalLabel from "./OptionalLabel";
+// import OptionalLabel from "./OptionalLabel";
 import { CaretRight } from "@phosphor-icons/react";
 
 
-interface Module {
-  Name: string,
-  Score: number,
-  Completed: boolean,
-  StartDate: string | null,
-  LmsModuleUrl: string,
-}
+// interface Module {
+//   Name: string,
+//   Score: number,
+//   Completed: boolean,
+//   StartDate: string | null,
+//   LmsModuleUrl: string,
+// }
 
-interface Course {
-  Name: string;
-  Complete: boolean,
-  PercentageComplete: number,
-  LmsCourseUrl: string,
-  Description: string,
-  Modules: Module[],
-  isOptional?: boolean,
-}
+// interface Course {
+//   Name: string;
+//   Complete: boolean,
+//   PercentageComplete: number,
+//   LmsCourseUrl: string,
+//   Description: string,
+//   Modules: Module[],
+//   isOptional?: boolean,
+// }
 
 interface CourseTitleProps {
   title?: string;
   lmsCourseUrl?: string;
   isVisible: boolean;
   isOptional?: boolean;
-  data: {
-    VLP_NAME: string;
-    VLP_PercentageComplete: number;
-    Courses: Course[];
-  };
+  // data: {
+  //   VLP_NAME: string;
+  //   VLP_PercentageComplete: number;
+  //   Courses: Course[];
+  // };
 }
 
 const CourseTitle: React.FC<CourseTitleProps> = ({ title,
   lmsCourseUrl,
   isVisible,
-  isOptional, data
+  isOptional
 }) => {
 
   const style = isVisible
@@ -66,7 +66,7 @@ const CourseTitle: React.FC<CourseTitleProps> = ({ title,
       )}
 
       {/* If the course is optional, display the OptionalLabel component */}
-      {isOptional && <OptionalLabel data={data} />}
+      {/* {isOptional && <OptionalLabel data={data} />} */}
     </div>
   );
 };

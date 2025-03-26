@@ -3,23 +3,23 @@ import CourseTitle from "./CourseTitle";
 import Progress from "./Progress";
 
 
-interface Module{
-    Name: string,
-    Score: number,
-    Completed: boolean,
-    StartDate: string | null,
-    LmsModuleUrl: string,
-  }
+// interface Module{
+//     Name: string,
+//     Score: number,
+//     Completed: boolean,
+//     StartDate: string | null,
+//     LmsModuleUrl: string,
+//   }
   
-  interface Course{
-    Name: string;
-    Complete: boolean,
-    PercentageComplete: number,
-    LmsCourseUrl: string,
-    Description:string,
-    Modules: Module[],
-    isOptional?: boolean,
-  }
+//   interface Course{
+//     Name: string;
+//     Complete: boolean,
+//     PercentageComplete: number,
+//     LmsCourseUrl: string,
+//     Description:string,
+//     Modules: Module[],
+//     isOptional?: boolean,
+//   }
 
 interface HeaderProps {
   isVisible: boolean;
@@ -27,11 +27,11 @@ interface HeaderProps {
   coursePercentageComplete?: number;
   lmsCourseUrl?: string;
   isOptional?: boolean;
-  data: {
-    VLP_NAME: string;
-    VLP_PercentageComplete: number;
-    Courses: Course[];
-  };
+  // data: {
+  //   VLP_NAME: string;
+  //   VLP_PercentageComplete: number;
+  //   Courses: Course[];
+  // };
 }
 
 const Header: React.FC<HeaderProps> = ({ isVisible,
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible,
     coursePercentageComplete,
     lmsCourseUrl,
     isOptional,
-    data}) => {
+    }) => {
 
   return (
 <div className="mb-1 flex w-full items-center justify-between rounded-xl bg-[#eff2f3] p-2">
@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible,
         lmsCourseUrl={lmsCourseUrl}
         isVisible={isVisible}
         isOptional={isOptional ?? false}
-        data={data}
+       
       />
        {/* Render the Progress component */}
       <Progress coursePercentageComplete={coursePercentageComplete ?? 0} />
